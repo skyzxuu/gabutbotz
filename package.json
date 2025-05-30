@@ -6,7 +6,7 @@
     "start": "node client.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "skyzxu",
   "license": "ISC",
   "description": "",
   "dependencies": {
