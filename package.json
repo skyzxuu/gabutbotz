@@ -1,0 +1,20 @@
+{
+  "name": "TelegramBot",
+  "version": "1.0.0",
+  "main": "client.js",
+  "scripts": {
+    "start": "node client.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@bochilteam/scraper": "^5.0.1",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.9.0",
+    "chokidar": "^4.0.3",
+    "dotenv": "^16.5.0",
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}
