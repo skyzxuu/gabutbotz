@@ -2,7 +2,7 @@ const os = require("os");
 const process = require("process");
 
 module.exports = (bot) => {
-  bot.onText(/^\/serverinfo$/, async (msg) => {
+  bot.onText(/^\/info$/, async (msg) => {
     const chatId = msg.chat.id;
 
     const uptime = process.uptime();

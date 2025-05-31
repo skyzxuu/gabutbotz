@@ -4,13 +4,13 @@ const path = require('path')
 const { tmpdir } = require('os')
 
 module.exports = bot => {
-  global.commands = global.commands || [];
+  global.commands = global.commands || []
   global.commands.push({
     command: '/tiktok',
     tags: ['downloader'],
-    description: 'Download video dari tiktok',
-  });
-  
+    description: 'Download video dari tiktok'
+  })
+
   bot.onText(/^\/(tiktok|tt)(?:\s+(.+))?$/i, async (msg, match) => {
     const chatId = msg.chat.id
     const command = match[1]
@@ -23,15 +23,14 @@ module.exports = bot => {
     bot.sendMessage(chatId, 'Sedang memproses...')
 
     try {
-      const res = await axios.get(`https://tikwm.com/api/?url=${encodeURIComponent(url)}`)
-      const result = res.data
+      const res = await scraper.tiktok.download(url)
+      const data = res?.data
 
-      if (!result.data) return bot.sendMessage(chatId, 'Gagal mengambil data dari TikTok.')
+      if (!data || (!data.play && (!data.images || !data.images.length))) {
+        return bot.sendMessage(chatId, '❌ Gagal mengambil data dari TikTok.')
+      }
 
-      const data = result.data
-      const isSlide = data.images && data.images.length
-
-      if (isSlide) {
+      if (data.images && data.images.length) {
         for (let i = 0; i < data.images.length; i++) {
           const imgUrl = data.images[i]
           const filename = path.join(tmpdir(), `slide${i}.jpg`)
@@ -41,10 +40,10 @@ module.exports = bot => {
           fs.unlinkSync(filename)
         }
       } else {
-        const videoUrl = data.play
+        const videoUrl = data.hdplay || data.play
         const caption = `*TikTok Downloader*\n` +
-                        `- Title : ${data.title || 'Tidak ada'}\n` +
-                        `- Author : ${data.author.nickname}\n` +
+                        `- Judul : ${data.title || 'Tidak ada'}\n` +
+                        `- Author : ${data.author?.nickname || '-'}\n` +
                         `- Like : ${data.digg_count?.toLocaleString() || 0}`
 
         const filename = path.join(tmpdir(), `tiktok.mp4`)
